@@ -79,12 +79,12 @@ public struct SettingsView: View {
                 }
                 
                 Section(header: Text("録音と挿入").bold()) {
-                    Slider(value: $settings.maxRecordingDurationSeconds, in: 60...600, step: 30) {
-                        Text("最大録音時間: \(Int(settings.maxRecordingDurationSeconds / 60))分 (\(Int(settings.maxRecordingDurationSeconds))秒)")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("1回の録音の上限: \(Int(settings.maxRecordingDurationSeconds / 60))分")
+                        Slider(value: $settings.maxRecordingDurationSeconds, in: 60...600, step: 30)
                     }
-                    Text("最大録音時間: \(Int(settings.maxRecordingDurationSeconds / 60))分")
-                        .font(.caption).foregroundColor(.secondary)
-                    
+                    .padding(.vertical, 4)
+
                     Toggle("入力欄への自動挿入 (Accessibility API)", isOn: $settings.enableAutoInsertion)
                     Toggle("完了時にクリップボードへコピー", isOn: $settings.copyToClipboardOnFinish)
                     Toggle("処理後に一時音声を削除 (プライバシー保護)", isOn: $settings.deleteAudioAfterProcessing)
@@ -95,7 +95,7 @@ public struct SettingsView: View {
                     Toggle("ローカルLLMによる整文 (言い直し・段落整形)", isOn: $settings.enableLLMRewrite)
                 }
             }
-            .padding()
+            .formStyle(.grouped)
             .tabItem {
                 Label("一般", systemImage: "gearshape")
             }
@@ -138,7 +138,7 @@ public struct SettingsView: View {
                         .foregroundColor(.blue)
                 }
             }
-            .padding()
+            .formStyle(.grouped)
             .tabItem {
                 Label("モデル", systemImage: "cpu")
             }
@@ -190,7 +190,7 @@ public struct SettingsView: View {
                 Label("辞書", systemImage: "character.book.closed")
             }
         }
-        .frame(width: 560, height: 460)
+        .frame(width: 620, height: 520)
         .onAppear {
             refreshModels()
         }
