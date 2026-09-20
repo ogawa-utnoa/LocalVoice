@@ -1,0 +1,16 @@
+# Build output
+.build/
+LocalVoiceInput.app/
+*.xcodeproj/xcuserdata/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Models are downloaded by scripts/download_models.sh (too large for git, separately licensed)
+Models/*.bin
+Models/*.gguf
+Models/*.part
+
+# Personal, never published
+build.local.env
+private/
