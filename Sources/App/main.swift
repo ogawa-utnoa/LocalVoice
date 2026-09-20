@@ -1,10 +1,10 @@
 import AppKit
 import SwiftUI
-import LocalVoiceInputCore
+import LocalVoiceCore
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        AppLogger.shared.info("LocalVoiceInput application starting...")
+        AppLogger.shared.info("LocalVoice application starting...")
         
         // Setup Menu Bar Item
         MenuBarController.shared.setup()
@@ -38,7 +38,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         GlobalShortcutManager.shared.stopMonitoring()
         TemporaryAudioStore.shared.cleanupAll()
-        AppLogger.shared.info("LocalVoiceInput terminated cleanly.")
+        AppLogger.shared.info("LocalVoice terminated cleanly.")
     }
 }
 

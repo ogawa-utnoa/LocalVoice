@@ -17,7 +17,7 @@ case "$TARGET" in
 esac
 
 mkdir -p "$MODELS_DIR"
-echo "=== LocalVoiceInput model download ($TARGET) -> $MODELS_DIR"
+echo "=== LocalVoice model download ($TARGET) -> $MODELS_DIR"
 
 verify() { # file sha256
     [ "$(shasum -a 256 "$1" | cut -d' ' -f1)" = "$2" ]

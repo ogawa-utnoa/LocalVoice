@@ -27,8 +27,8 @@ public struct UserDictionaryEntry: Codable, Equatable, Identifiable {
 public final class UserDictionary: @unchecked Sendable {
     public static let shared = UserDictionary()
 
-    private let key = "LocalVoiceInputUserDictionary"
-    private let versionKey = "LocalVoiceInputUserDictionaryVersion"
+    private let key = "LocalVoiceUserDictionary"
+    private let versionKey = "LocalVoiceUserDictionaryVersion"
     /// Bump when the defaults change so existing users receive the new words / variants.
     private static let defaultsVersion = 3
     private let lock = NSLock()
@@ -40,7 +40,7 @@ public final class UserDictionary: @unchecked Sendable {
     /// Optional personal dictionary kept outside the repository (names of your company, clients, people...).
     /// JSON array: [{"word": "正しい表記", "reading": "聞き間違い1, 聞き間違い2"}]. Merged on every launch.
     public static var personalFileURL: URL {
-        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".localvoiceinput/dictionary.json")
+        FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".localvoice/dictionary.json")
     }
     
     /// Defaults for AI / Google product names. Variants come from real Whisper outputs

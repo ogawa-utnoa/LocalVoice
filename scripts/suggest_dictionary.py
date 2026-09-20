@@ -10,7 +10,7 @@ Privacy:
   - Uses only messages YOU typed (no AI replies, no tool output, no pasted logs or code blocks)
   - Counts words only on lines that contain Japanese, i.e. words you actually say in your sentences
   - Prints only words and counts, never sentences. Nothing is sent anywhere by this script.
-The personal dictionary lives outside the repository: ~/.localvoiceinput/dictionary.json
+The personal dictionary lives outside the repository: ~/.localvoice/dictionary.json
 """
 import argparse
 import collections
@@ -22,7 +22,7 @@ import sys
 import time
 
 HOME = os.path.expanduser("~")
-DICT_PATH = os.path.join(HOME, ".localvoiceinput", "dictionary.json")
+DICT_PATH = os.path.join(HOME, ".localvoice", "dictionary.json")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULTS_SWIFT = os.path.join(ROOT, "Sources", "Core", "Storage", "UserDictionary.swift")
 
@@ -226,7 +226,7 @@ def apply(path):
     os.replace(tmp, DICT_PATH)
     print(json.dumps({"dictionary": DICT_PATH, "added": added, "extended": extended, "total": len(current)},
                      ensure_ascii=False))
-    print("Restart LocalVoiceInput to load the new words.", file=sys.stderr)
+    print("Restart LocalVoice to load the new words.", file=sys.stderr)
 
 
 def main():

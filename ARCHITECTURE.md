@@ -1,4 +1,4 @@
-# LocalVoiceInput の設計
+# LocalVoice の設計
 
 ## 1. 全体像
 
@@ -100,9 +100,9 @@ LLM が失敗・時間切れ・却下になっても、整形前の文章(辞書
 
 - 音声・文字を外部に送らない。通信するのはセットアップ時のモデル取得だけ
 - 一時的な音声ファイルは処理後に消す
-- ログ(`~/Library/Logs/LocalVoiceInput/app.log`)は時間・文字数・エラーだけ。話した内容は書かない
+- ログ(`~/Library/Logs/LocalVoice/app.log`)は時間・文字数・エラーだけ。話した内容は書かない
 
 ## 8. 検証
 
-- `swift run LocalVoiceInputTests`: 部品ごとのテストに加え、読み上げ音声を使った「音声 → 文字起こし → 整形 → 最終文」の一気通し検査
+- `swift run LocalVoiceTests`: 部品ごとのテストに加え、読み上げ音声を使った「音声 → 文字起こし → 整形 → 最終文」の一気通し検査
 - `python3 scripts/eval_asr.py`: モデル・辞書の組み合わせごとに文字誤り率を測る([BENCHMARK.md](BENCHMARK.md))

@@ -8,7 +8,7 @@ public final class TemporaryAudioStore: @unchecked Sendable {
     private let lock = NSLock()
     
     private init() {
-        let tempDir = fileManager.temporaryDirectory.appendingPathComponent("LocalVoiceInputAudio", isDirectory: true)
+        let tempDir = fileManager.temporaryDirectory.appendingPathComponent("LocalVoiceAudio", isDirectory: true)
         try? fileManager.createDirectory(at: tempDir, withIntermediateDirectories: true)
         self.baseDirectory = tempDir
     }

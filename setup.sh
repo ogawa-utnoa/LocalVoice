@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# LocalVoiceInput one-shot setup:
+# LocalVoice one-shot setup:
 #   check Mac -> install whisper.cpp / llama.cpp (only if missing) -> download models (SHA-256 verified)
-#   -> build LocalVoiceInput.app -> run tests -> launch
+#   -> build LocalVoice.app -> run tests -> launch
 #
 #   ./setup.sh                 # recommended models (~1.7GB), tests, launch
 #   ./setup.sh --full          # also low-memory fallback models (~2.7GB total)
@@ -58,26 +58,26 @@ need_tool llama-completion llama.cpp
 step "3/6 Models ($MODEL_SET)"
 ./scripts/download_models.sh "$MODEL_SET"
 
-step "4/6 Building LocalVoiceInput.app"
+step "4/6 Building LocalVoice.app"
 ./scripts/build_app.sh
 
 if [ "$RUN_TESTS" = 1 ]; then
     step "5/6 Tests (includes a real speech end-to-end check when a Japanese voice is available)"
-    swift run -c debug LocalVoiceInputTests
+    swift run -c debug LocalVoiceTests
 else
     step "5/6 Tests skipped"
 fi
 
 step "6/6 Done"
 if [ "$LAUNCH" = 1 ]; then
-    open "$ROOT_DIR/LocalVoiceInput.app"
-    echo "LocalVoiceInput is running (🎙️ in the menu bar)."
+    open "$ROOT_DIR/LocalVoice.app"
+    echo "LocalVoice is running (🎙️ in the menu bar)."
 fi
 cat <<'MSG'
 
 Two permissions must be granted by you (macOS does not allow apps to grant them):
   1. Microphone    — answer "Allow" when asked on the first recording.
-  2. Accessibility — System Settings > Privacy & Security > Accessibility > turn LocalVoiceInput ON
+  2. Accessibility — System Settings > Privacy & Security > Accessibility > turn LocalVoice ON
                      (the 🎙️ menu shows "⚠️ アクセシビリティ権限が無効…" until this is done).
 
 Use: put the cursor in any text field, press Option+Space, speak, press Option+Space again.

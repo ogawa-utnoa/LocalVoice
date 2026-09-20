@@ -1,6 +1,6 @@
 # Build output
 .build/
-LocalVoiceInput.app/
+LocalVoice.app/
 *.xcodeproj/xcuserdata/
 __pycache__/
 *.pyc

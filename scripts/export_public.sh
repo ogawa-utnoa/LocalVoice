@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Writes a publishable copy of this repository to <dest> (without build output, models and personal files)
 # and fails if anything personal is left in it.
-#   ./scripts/export_public.sh ~/Desktop/LocalVoiceInput-public
+#   ./scripts/export_public.sh ~/Desktop/LocalVoice-public
 # Personal words to block (company, names, paths...) go in private/leak-patterns.txt, one regex per line.
 # That file is never exported.
 set -euo pipefail
@@ -16,7 +16,7 @@ fi
 mkdir -p "$DEST"
 
 rsync -a \
-    --exclude '.git/' --exclude '.build/' --exclude 'LocalVoiceInput.app/' \
+    --exclude '.git/' --exclude '.build/' --exclude 'LocalVoice.app/' \
     --exclude 'Models/*.bin' --exclude 'Models/*.gguf' --exclude 'Models/*.part' \
     --exclude 'build.local.env' --exclude 'private/' \
     --exclude '__pycache__/' --exclude '*.pyc' --exclude '.DS_Store' \

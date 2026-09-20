@@ -2,40 +2,40 @@
 import PackageDescription
 
 let package = Package(
-    name: "LocalVoiceInput",
+    name: "LocalVoice",
     platforms: [
         .macOS(.v14)
     ],
     products: [
         .library(
-            name: "LocalVoiceInputCore",
-            targets: ["LocalVoiceInputCore"]
+            name: "LocalVoiceCore",
+            targets: ["LocalVoiceCore"]
         ),
         .executable(
-            name: "LocalVoiceInputApp",
-            targets: ["LocalVoiceInputApp"]
+            name: "LocalVoiceApp",
+            targets: ["LocalVoiceApp"]
         ),
         .executable(
-            name: "LocalVoiceInputTests",
-            targets: ["LocalVoiceInputTests"]
+            name: "LocalVoiceTests",
+            targets: ["LocalVoiceTests"]
         )
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "LocalVoiceInputCore",
+            name: "LocalVoiceCore",
             dependencies: [],
             path: "Sources/Core"
         ),
         .executableTarget(
-            name: "LocalVoiceInputApp",
-            dependencies: ["LocalVoiceInputCore"],
+            name: "LocalVoiceApp",
+            dependencies: ["LocalVoiceCore"],
             path: "Sources/App"
         ),
         .executableTarget(
-            name: "LocalVoiceInputTests",
-            dependencies: ["LocalVoiceInputCore"],
-            path: "Tests/LocalVoiceInputTests"
+            name: "LocalVoiceTests",
+            dependencies: ["LocalVoiceCore"],
+            path: "Tests/LocalVoiceTests"
         )
     ]
 )

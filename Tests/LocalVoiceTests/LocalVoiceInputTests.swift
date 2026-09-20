@@ -1,7 +1,7 @@
 import Foundation
 import AppKit
 import AVFoundation
-import LocalVoiceInputCore
+import LocalVoiceCore
 
 // MARK: - Test Framework Support (Pure Swift)
 
@@ -62,7 +62,7 @@ private func assertNotNil<T>(_ value: T?, _ message: String = "Expected non-nil 
 struct TestRunner {
     static func main() async {
         print("\n=======================================================")
-        print("  Running LocalVoiceInput Test Suite (Pure Swift)")
+        print("  Running LocalVoice Test Suite (Pure Swift)")
         print("=======================================================\n")
         
         // 1. Audio & Chunk Tests
@@ -199,7 +199,7 @@ struct TestRunner {
         let userClipboard = ClipboardService.shared.snapshot()
         
         runTest(name: "ClipboardService: Set and get string") {
-            let testVal = "LocalVoiceInput_Test_\(UUID().uuidString)"
+            let testVal = "LocalVoice_Test_\(UUID().uuidString)"
             ClipboardService.shared.copyToClipboard(testVal)
             let read = NSPasteboard.general.string(forType: .string)
             try assertEqual(read, testVal)

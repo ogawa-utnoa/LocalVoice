@@ -131,7 +131,7 @@ public final class MenuBarController: NSObject, @unchecked Sendable {
                 defer: false
             )
             window.center()
-            window.title = "LocalVoiceInput 設定"
+            window.title = "LocalVoice 設定"
             window.contentView = NSHostingView(rootView: SettingsView())
             window.isReleasedWhenClosed = false
             settingsWindow = window

@@ -1,4 +1,4 @@
-# LocalVoiceInput
+# LocalVoice
 
 Mac のどのアプリでも、**ショートカットを押して話すだけで、整った日本語の文章が今の入力欄に入る**音声入力アプリです。
 文字起こしも文章の整形も**すべて Mac の中で処理**します。音声も文字も外部に送らず、月額料金も文字数の上限もありません。
@@ -29,8 +29,8 @@ Option + Space → 好きなだけ話す(最大10分) → Option + Space → 数
 ### A. Claude Code / Codex に任せる(おすすめ)
 
 ```bash
-git clone https://github.com/ogawa-utnoa/LocalVoiceInput.git
-cd LocalVoiceInput
+git clone https://github.com/ogawa-utnoa/LocalVoice.git
+cd LocalVoice
 claude   # または codex
 ```
 
@@ -39,8 +39,8 @@ claude   # または codex
 ### B. 自分でコマンドを打つ
 
 ```bash
-git clone https://github.com/ogawa-utnoa/LocalVoiceInput.git
-cd LocalVoiceInput
+git clone https://github.com/ogawa-utnoa/LocalVoice.git
+cd LocalVoice
 ./setup.sh
 ```
 
@@ -49,7 +49,7 @@ cd LocalVoiceInput
 1. Mac の確認(Apple Silicon・macOS 14 以降・Command Line Tools)
 2. whisper.cpp と llama.cpp を Homebrew で導入(すでに入っていれば触らない)
 3. モデルの取得(Hugging Face の公式配布元から。改ざん・破損はチェックサムで検出)
-4. アプリのビルド(`LocalVoiceInput.app`)
+4. アプリのビルド(`LocalVoice.app`)
 5. テスト(日本語の読み上げ音声を使った、録音から整形までの一気通しの検査を含む)
 6. 起動(メニューバーに 🎙️ が出る)
 
@@ -60,7 +60,7 @@ cd LocalVoiceInput
 macOS の仕様で、この2つはアプリからもAIからも許可できません。
 
 1. **マイク**: 初めて録音したときに出る確認で「許可」
-2. **アクセシビリティ**(入力欄に文字を入れるために必要): システム設定 > プライバシーとセキュリティ > アクセシビリティ で `LocalVoiceInput` をオン
+2. **アクセシビリティ**(入力欄に文字を入れるために必要): システム設定 > プライバシーとセキュリティ > アクセシビリティ で `LocalVoice` をオン
 
 許可されていない間は、メニューバーの 🎙️ に「⚠️ アクセシビリティ権限が無効」と表示されます。
 
@@ -87,7 +87,7 @@ macOS の仕様で、この2つはアプリからもAIからも許可できま�
 🎙️ >「設定…」>「辞書」で、**正しい表記**と**聞き間違えやすい書き方**(カンマ区切り)を登録すると、文字起こしのあとで正しい表記に直します。
 登録した言葉は文字起こしのヒントとしても使うので、そもそも聞き間違えにくくなります。
 
-公開したくない言葉(社名・取引先・人名など)は、リポジトリの外のファイル `~/.localvoiceinput/dictionary.json` に書けます。起動のたびに読み込みます。
+公開したくない言葉(社名・取引先・人名など)は、リポジトリの外のファイル `~/.localvoice/dictionary.json` に書けます。起動のたびに読み込みます。
 
 ```json
 [
@@ -114,7 +114,7 @@ AI に「[AGENTS.md](AGENTS.md) の辞書づくりをやって」と頼めば、
 Claude Code や Codex を開いて、そのまま貼り付けられます。
 
 ```text
-https://github.com/ogawa-utnoa/LocalVoiceInput をクローンして、AGENTS.md の手順どおりにセットアップしてください。
+https://github.com/ogawa-utnoa/LocalVoice をクローンして、AGENTS.md の手順どおりにセットアップしてください。
 終わったら、AGENTS.md の「辞書づくり」もやってください(私の過去の入力からよく使う言葉を拾って、一覧を見せてから登録)。
 最後に、私が自分でやる必要がある許可の手順を教えてください。
 ```
@@ -152,11 +152,11 @@ macOS の読み上げ音声4種 × 製品名を含む7文 = 28本で測りまし
 
 | 症状 | 対処 |
 | :--- | :--- |
-| 文章が入らず「📋 クリップボードに保存」と出る | アクセシビリティの許可が無効。自分でビルドし直した後は、設定画面でオンに見えても無効になっている。`tccutil reset Accessibility local.voiceinput.LocalVoiceInput` を実行し、アプリを起動し直してから許可し直す |
-| ビルドのたびに許可し直すのが面倒 | 画面上部のメニュー「キーチェーンアクセス」>「証明書アシスタント」>「証明書を作成…」で、名前 `LocalVoiceInput Dev`・固有名の種類「自己署名ルート」・証明書のタイプ「コード署名」の証明書を作り、`build.local.env` に `LVI_SIGN_IDENTITY="LocalVoiceInput Dev"` と書いてからビルドする。以後は署名が変わらないので、許可が外れない(証明書に「信頼」を設定する必要はない) |
+| 文章が入らず「📋 クリップボードに保存」と出る | アクセシビリティの許可が無効。自分でビルドし直した後は、設定画面でオンに見えても無効になっている。`tccutil reset Accessibility local.voice.LocalVoice` を実行し、アプリを起動し直してから許可し直す |
+| ビルドのたびに許可し直すのが面倒 | 画面上部のメニュー「キーチェーンアクセス」>「証明書アシスタント」>「証明書を作成…」で、名前 `LocalVoice Dev`・固有名の種類「自己署名ルート」・証明書のタイプ「コード署名」の証明書を作り、`build.local.env` に `LV_SIGN_IDENTITY="LocalVoice Dev"` と書いてからビルドする。以後は署名が変わらないので、許可が外れない(証明書に「信頼」を設定する必要はない) |
 | Option + Space が効かない | 他のアプリと重なっている。🎙️ >「設定…」でショートカットを変える |
 | 「音声を認識できませんでした」 | システム設定 > サウンド > 入力 で使うマイクと音量を確認する |
-| 何が起きたか知りたい | 🎙️ >「ログを開く」(`~/Library/Logs/LocalVoiceInput/app.log`)。時間・文字数・エラーだけを記録し、話した内容は書かない |
+| 何が起きたか知りたい | 🎙️ >「ログを開く」(`~/Library/Logs/LocalVoice/app.log`)。時間・文字数・エラーだけを記録し、話した内容は書かない |
 | テストで音声の検査が飛ばされる | 日本語の読み上げ音声「Kyoko」が必要。システム設定 > アクセシビリティ > 読み上げコンテンツ から追加できる |
 
 ## ライセンス

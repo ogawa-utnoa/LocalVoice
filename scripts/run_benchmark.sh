@@ -6,7 +6,7 @@ ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 MODELS_DIR="$ROOT_DIR/Models"
 
 echo "======================================================="
-echo "  LocalVoiceInput Live Performance Benchmark"
+echo "  LocalVoice Live Performance Benchmark"
 echo "======================================================="
 echo "Hardware: Apple Silicon $(sysctl -n machdep.cpu.brand_string 2>/dev/null || uname -m)"
 echo "Memory: $(($(sysctl -n hw.memsize) / 1024 / 1024 / 1024)) GB"

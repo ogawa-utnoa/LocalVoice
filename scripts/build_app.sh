@@ -4,26 +4,26 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 BUILD_DIR="$ROOT_DIR/.build/release"
-APP_BUNDLE="$ROOT_DIR/LocalVoiceInput.app"
+APP_BUNDLE="$ROOT_DIR/LocalVoice.app"
 CONTENTS_DIR="$APP_BUNDLE/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 RESOURCES_DIR="$CONTENTS_DIR/Resources"
 
-# Optional local overrides (not published): LVI_BUNDLE_ID, LVI_SIGN_IDENTITY
+# Optional local overrides (not published): LV_BUNDLE_ID, LV_SIGN_IDENTITY
 if [ -f "$ROOT_DIR/build.local.env" ]; then
     # shellcheck disable=SC1091
     source "$ROOT_DIR/build.local.env"
 fi
-BUNDLE_ID="${LVI_BUNDLE_ID:-local.voiceinput.LocalVoiceInput}"
+BUNDLE_ID="${LV_BUNDLE_ID:-local.voice.LocalVoice}"
 
 echo "======================================================="
-echo "  Building LocalVoiceInput.app (Release)"
+echo "  Building LocalVoice.app (Release)"
 echo "======================================================="
 
 cd "$ROOT_DIR"
 
 # 1. Build release binary using Swift Package Manager
-swift build -c release --product LocalVoiceInputApp
+swift build -c release --product LocalVoiceApp
 
 # 2. Prepare .app bundle structure
 rm -rf "$APP_BUNDLE"
@@ -31,7 +31,7 @@ mkdir -p "$MACOS_DIR"
 mkdir -p "$RESOURCES_DIR"
 
 # Copy executable
-cp "$BUILD_DIR/LocalVoiceInputApp" "$MACOS_DIR/LocalVoiceInput"
+cp "$BUILD_DIR/LocalVoiceApp" "$MACOS_DIR/LocalVoice"
 
 # 3. Create Info.plist with LSUIElement=1 (menu bar only) and microphone permissions
 cat << EOF > "$CONTENTS_DIR/Info.plist"
@@ -40,11 +40,11 @@ cat << EOF > "$CONTENTS_DIR/Info.plist"
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>LocalVoiceInput</string>
+    <string>LocalVoice</string>
     <key>CFBundleIdentifier</key>
     <string>$BUNDLE_ID</string>
     <key>CFBundleName</key>
-    <string>LocalVoiceInput</string>
+    <string>LocalVoice</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -67,9 +67,9 @@ EOF
 
 # 4. Code sign the whole bundle with a fixed identifier (binds Info.plist).
 #    Ad-hoc ("-") signatures change on every rebuild, and macOS then treats the rebuilt app as a different app:
-#    the Accessibility toggle still looks ON but no longer applies. Set LVI_SIGN_IDENTITY (in build.local.env)
+#    the Accessibility toggle still looks ON but no longer applies. Set LV_SIGN_IDENTITY (in build.local.env)
 #    to a code signing certificate name (e.g. a self-signed one created in Keychain Access) to keep permissions.
-SIGN_IDENTITY="${LVI_SIGN_IDENTITY:--}"
+SIGN_IDENTITY="${LV_SIGN_IDENTITY:--}"
 codesign --force --sign "$SIGN_IDENTITY" --identifier "$BUNDLE_ID" "$APP_BUNDLE"
 codesign --verify "$APP_BUNDLE"
 

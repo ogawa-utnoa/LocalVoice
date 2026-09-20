@@ -47,13 +47,13 @@ public final class AppLogger: @unchecked Sendable {
     private let timestampFormatter = ISO8601DateFormatter()
     private var fileHandle: FileHandle?
     
-    /// ~/Library/Logs/LocalVoiceInput/app.log — metadata only (timings, states, error codes), never spoken text.
+    /// ~/Library/Logs/LocalVoice/app.log — metadata only (timings, states, error codes), never spoken text.
     public let logFileURL: URL
     private let maxLogBytes: UInt64 = 5 * 1024 * 1024
     
     private init() {
         let dir = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Logs/LocalVoiceInput", isDirectory: true)
+            .appendingPathComponent("Library/Logs/LocalVoice", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         logFileURL = dir.appendingPathComponent("app.log")
         openLogFile()

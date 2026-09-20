@@ -33,7 +33,7 @@ which whisper-cli llama-completion
 
 ```bash
 ./scripts/build_app.sh
-open LocalVoiceInput.app
+open LocalVoice.app
 ```
 
 メニューバーに 🎙️ が出ます。
@@ -41,10 +41,10 @@ open LocalVoiceInput.app
 ## 5. 権限
 
 1. マイク: 初回の録音時の確認で「許可」(システム設定 > プライバシーとセキュリティ > マイク)
-2. アクセシビリティ: システム設定 > プライバシーとセキュリティ > アクセシビリティ で `LocalVoiceInput` をオン
+2. アクセシビリティ: システム設定 > プライバシーとセキュリティ > アクセシビリティ で `LocalVoice` をオン
 
 再ビルドすると、アクセシビリティの許可は無効になります(仮の署名が毎回変わるため)。
-`tccutil reset Accessibility local.voiceinput.LocalVoiceInput` を実行してから、許可し直してください。
+`tccutil reset Accessibility local.voice.LocalVoice` を実行してから、許可し直してください。
 
 ## 6. ログイン時の自動起動(任意)
 
@@ -60,6 +60,6 @@ open LocalVoiceInput.app
 リポジトリ直下に `build.local.env` を置くと、ビルドの設定を変えられます(公開・コミットの対象外)。
 
 ```bash
-LVI_BUNDLE_ID=com.example.LocalVoiceInput     # アプリのID
-LVI_SIGN_IDENTITY="LocalVoiceInput Dev"       # コード署名用の証明書名(再ビルドしても権限が外れなくなる)
+LV_BUNDLE_ID=com.example.LocalVoice     # アプリのID
+LV_SIGN_IDENTITY="LocalVoice Dev"       # コード署名用の証明書名(再ビルドしても権限が外れなくなる)
 ```

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Whisper model / prompt accuracy comparison for LocalVoiceInput.
+"""Whisper model / prompt accuracy comparison for LocalVoice.
 
 Generates Japanese speech with macOS `say` (several voices), transcribes it with every
 ggml Whisper model in Models/ (with and without the vocabulary prompt), and reports:
@@ -46,7 +46,7 @@ CASES = [
 DICTIONARY_SWIFT = os.path.join(ROOT, "Sources", "Core", "Storage", "UserDictionary.swift")
 
 
-PERSONAL_DICT = os.path.join(os.path.expanduser("~"), ".localvoiceinput", "dictionary.json")
+PERSONAL_DICT = os.path.join(os.path.expanduser("~"), ".localvoice", "dictionary.json")
 
 
 def load_dictionary(include_personal=False):
@@ -132,7 +132,7 @@ def main():
     ap.add_argument("--models", default="", help="comma separated substrings of model file names")
     ap.add_argument("--voices", default="Kyoko,Eddy (日本語（日本）),Flo (日本語（日本）),Reed (日本語（日本）)")
     ap.add_argument("--show", action="store_true", help="print every transcription")
-    ap.add_argument("--personal", action="store_true", help="also use ~/.localvoiceinput/dictionary.json")
+    ap.add_argument("--personal", action="store_true", help="also use ~/.localvoice/dictionary.json")
     a = ap.parse_args()
 
     models = sorted(glob.glob(os.path.join(MODELS, "ggml-*.bin")))

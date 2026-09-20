@@ -176,7 +176,7 @@ public final class AudioCaptureService: @unchecked Sendable {
     }
     
     private func startPollingTimer(maxDurationSeconds: Double) {
-        let queue = DispatchQueue(label: "com.localvoiceinput.audiopoller", qos: .userInitiated)
+        let queue = DispatchQueue(label: "com.localvoice.audiopoller", qos: .userInitiated)
         let t = DispatchSource.makeTimerSource(queue: queue)
         t.schedule(deadline: .now() + 1.0, repeating: 1.0)
         

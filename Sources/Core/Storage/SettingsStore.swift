@@ -6,7 +6,7 @@ public enum AppOperatingMode: String, Codable, CaseIterable {
     case emergency = "Emergency"
 }
 
-public struct LocalVoiceInputSettings: Codable, Equatable {
+public struct LocalVoiceSettings: Codable, Equatable {
     public var shortcutKeyCode: UInt16 = 49 // Space
     public var shortcutModifiers: UInt = 524288 // NSEvent.ModifierFlags.option.rawValue
     public var shortcutDisplayName: String = "Option + Space"
@@ -34,20 +34,20 @@ public struct LocalVoiceInputSettings: Codable, Equatable {
 public final class SettingsStore: @unchecked Sendable {
     public static let shared = SettingsStore()
     
-    private let userDefaultsKey = "LocalVoiceInputSettings"
+    private let userDefaultsKey = "LocalVoiceSettings"
     private let lock = NSLock()
-    private var currentSettings: LocalVoiceInputSettings
+    private var currentSettings: LocalVoiceSettings
     
     private init() {
         if let data = UserDefaults.standard.data(forKey: userDefaultsKey),
-           let loaded = try? JSONDecoder().decode(LocalVoiceInputSettings.self, from: data) {
+           let loaded = try? JSONDecoder().decode(LocalVoiceSettings.self, from: data) {
             self.currentSettings = loaded
         } else {
-            self.currentSettings = LocalVoiceInputSettings()
+            self.currentSettings = LocalVoiceSettings()
         }
     }
     
-    public var settings: LocalVoiceInputSettings {
+    public var settings: LocalVoiceSettings {
         get {
             lock.lock()
             defer { lock.unlock() }
@@ -62,7 +62,7 @@ public final class SettingsStore: @unchecked Sendable {
         }
     }
     
-    public func update(_ block: (inout LocalVoiceInputSettings) -> Void) {
+    public func update(_ block: (inout LocalVoiceSettings) -> Void) {
         lock.lock()
         var copy = currentSettings
         block(&copy)

@@ -18,7 +18,7 @@ public final class ModelManager: @unchecked Sendable {
     public var candidateModelDirectories: [URL] {
         var dirs: [URL] = []
         
-        // 1. Next to the app bundle (e.g. LocalVoiceInput/Models)
+        // 1. Next to the app bundle (e.g. LocalVoice/Models)
         let bundleParent = Bundle.main.bundleURL.deletingLastPathComponent().appendingPathComponent("Models")
         dirs.append(bundleParent)
         

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Starts LocalVoiceInput automatically when you log in (macOS LaunchAgent).
+# Starts LocalVoice automatically when you log in (macOS LaunchAgent).
 #   ./scripts/install_login_item.sh              # install and start now
 #   ./scripts/install_login_item.sh --uninstall  # stop starting it automatically
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 [ -f "$ROOT_DIR/build.local.env" ] && source "$ROOT_DIR/build.local.env"
-LABEL="${LVI_BUNDLE_ID:-local.voiceinput.LocalVoiceInput}"
-APP="$ROOT_DIR/LocalVoiceInput.app"
-BIN="$APP/Contents/MacOS/LocalVoiceInput"
+LABEL="${LV_BUNDLE_ID:-local.voice.LocalVoice}"
+APP="$ROOT_DIR/LocalVoice.app"
+BIN="$APP/Contents/MacOS/LocalVoice"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 DOMAIN="gui/$(id -u)"
 
@@ -46,4 +46,4 @@ PLIST_EOF
 launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$PLIST"
 echo "Installed: $PLIST"
-echo "LocalVoiceInput now starts when you log in (quitting it from the menu does not restart it until the next login)."
+echo "LocalVoice now starts when you log in (quitting it from the menu does not restart it until the next login)."
