@@ -128,6 +128,11 @@ public final class RecordingOverlayController: @unchecked Sendable {
             panel.backgroundColor = .clear
             panel.hasShadow = false
             panel.ignoresMouseEvents = false
+            panel.isMovableByWindowBackground = true
+            // queue: nil = delivered synchronously, so `isPlacing` reliably marks our own moves
+            NotificationCenter.default.addObserver(forName: NSWindow.didMoveNotification, object: panel, queue: nil) { [weak self] _ in
+                self?.savePosition()
+            }
             panel.contentView = NSHostingView(rootView: RecordingOverlayView())
             self.window = panel
         }
@@ -135,18 +140,54 @@ public final class RecordingOverlayController: @unchecked Sendable {
         guard let window = self.window, let screen = NSScreen.main else { return }
         
         // Fit the panel to the current message (errors can be longer than the recording pill)
+        var size = window.frame.size
         if let content = window.contentView {
             let fitting = content.fittingSize
-            window.setContentSize(NSSize(width: max(340, fitting.width), height: max(48, fitting.height)))
+            size = NSSize(width: max(340, fitting.width), height: max(48, fitting.height))
         }
         
-        // Position at bottom center of the active screen (similar to Typeless / Siri)
-        let screenRect = screen.visibleFrame
-        let x = screenRect.midX - (window.frame.width / 2)
-        let y = screenRect.minY + 60
-        
-        window.setFrameOrigin(NSPoint(x: x, y: y))
+        // Runs every second while recording: re-place only on first show or a size change, or the panel drifts upward.
+        if !window.isVisible || size != lastWantedSize {
+            lastWantedSize = size
+            let center = window.isVisible ? NSPoint(x: window.frame.midX, y: window.frame.midY) : Self.savedCenter()
+            let screens = NSScreen.screens.map { (frame: $0.frame, visible: $0.visibleFrame) }
+            isPlacing = true
+            window.setFrame(NSRect(origin: Self.placement(center: center, size: size, screens: screens, activeScreen: screen.visibleFrame), size: size), display: true)
+            isPlacing = false
+        }
         window.orderFront(nil)
+    }
+    
+    /// Where the panel goes: around the remembered center, kept fully inside the screen that center is on.
+    /// Without a remembered center (or when its screen is gone): bottom center of the active screen (similar to Typeless / Siri).
+    /// The screen is found by its full frame (the center may sit in the Dock / menu bar band), the panel is kept inside its visible frame.
+    public static func placement(center: NSPoint?, size: NSSize, screens: [(frame: NSRect, visible: NSRect)], activeScreen: NSRect) -> NSPoint {
+        guard let c = center, let s = screens.first(where: { $0.frame.contains(c) })?.visible else {
+            return NSPoint(x: activeScreen.midX - size.width / 2, y: activeScreen.minY + 60)
+        }
+        return NSPoint(x: max(s.minX, min(c.x - size.width / 2, s.maxX - size.width)),
+                       y: max(s.minY, min(c.y - size.height / 2, s.maxY - size.height)))
+    }
+    
+    // The settings screen rewrites the whole settings struct, so the position lives under its own key.
+    // The center is stored (not the origin): the panel's width changes with the message.
+    private static let positionKey = "LocalVoiceOverlayCenter"
+    private var isPlacing = false
+    private var lastWantedSize = NSSize.zero
+    
+    private static func savedCenter() -> NSPoint? {
+        guard let a = UserDefaults.standard.array(forKey: positionKey) as? [Double], a.count == 2 else { return nil }
+        return NSPoint(x: a[0], y: a[1])
+    }
+    
+    static func resetPosition() {
+        UserDefaults.standard.removeObject(forKey: positionKey)
+    }
+    
+    private func savePosition() {
+        // only the user's drags (left button down), not our own placement or AppKit's repositioning
+        guard !isPlacing, NSEvent.pressedMouseButtons & 1 != 0, let f = window?.frame else { return }
+        UserDefaults.standard.set([Double(f.midX), Double(f.midY)], forKey: Self.positionKey)
     }
     
     @MainActor

@@ -88,6 +88,12 @@ public struct SettingsView: View {
                     Toggle("入力欄への自動挿入 (Accessibility API)", isOn: $settings.enableAutoInsertion)
                     Toggle("完了時にクリップボードへコピー", isOn: $settings.copyToClipboardOnFinish)
                     Toggle("処理後に一時音声を削除 (プライバシー保護)", isOn: $settings.deleteAudioAfterProcessing)
+                    HStack {
+                        Text("録音表示の位置: 表示をドラッグして移動(位置は記憶されます)")
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer()
+                        Button("位置を初期化") { RecordingOverlayController.resetPosition() }
+                    }
                 }
                 
                 Section(header: Text("整文エンジン").bold()) {
