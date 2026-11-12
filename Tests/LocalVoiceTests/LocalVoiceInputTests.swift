@@ -506,6 +506,18 @@ struct TestRunner {
             print("  - [SKIP] needs whisper-cli, llama-completion, models and the Japanese 'Kyoko' voice (System Settings > Accessibility > Spoken Content)")
         }
         
+        runTest(name: "Recording overlay placement (remembered center, kept on screen)") {
+            // main has a 70pt Dock band at the bottom: the visible frame starts at y=70
+            let main = NSRect(x: 0, y: 0, width: 1440, height: 900), second = NSRect(x: 1440, y: 0, width: 1920, height: 1080)
+            let mainVisible = NSRect(x: 0, y: 70, width: 1440, height: 830)
+            let size = NSSize(width: 340, height: 48)
+            let place = { (c: NSPoint?, s: NSSize) in RecordingOverlayController.placement(center: c, size: s, screens: [(main, mainVisible), (second, second)], activeScreen: mainVisible) }
+            try assertEqual(place(nil, size), NSPoint(x: 550, y: 130), "default: bottom center of the active screen (above the Dock)")
+            try assertEqual(place(NSPoint(x: 700, y: 20), size), NSPoint(x: 530, y: 70), "center dropped in the Dock band: kept, pulled above the Dock")
+            try assertEqual(place(NSPoint(x: 2000, y: 500), size), NSPoint(x: 1830, y: 476), "centered on the remembered point")
+            try assertEqual(place(NSPoint(x: 1430, y: 890), NSSize(width: 556, height: 64)), NSPoint(x: 884, y: 836), "a wide message near the edge stays inside its screen")
+            try assertEqual(place(NSPoint(x: 5000, y: 500), size), NSPoint(x: 550, y: 130), "remembered screen is gone: default")        }
+        
         // Final Summary
         print("\n=======================================================")
         print("  Test Results: \(totalTestsPassed)/\(totalTestsRun) passed (\(totalTestsFailed) failed)")
